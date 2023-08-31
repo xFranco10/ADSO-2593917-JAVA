@@ -5,16 +5,17 @@
         <group>
             <file>file:/D:/JAVA-CON-GIT/21-FacturadorCompleto/src/ModuloFacturas/ListarFacturas.java</file>
             <file>file:/D:/JAVA-CON-GIT/21-FacturadorCompleto/src/ModuloUsuarios/ModificarUsuario.java</file>
-            <file>file:/D:/JAVA-CON-GIT/21-FacturadorCompleto/src/Clases/Factura.java</file>
-            <file>file:/D:/JAVA-CON-GIT/21-FacturadorCompleto/src/ModuloProductos/ModificarProductos.java</file>
             <file>file:/D:/JAVA-CON-GIT/21-FacturadorCompleto/src/ModuloFacturas/CrearFactura.java</file>
-            <file>file:/D:/JAVA-CON-GIT/21-FacturadorCompleto/src/ModuloProductos/EliminarProductos.java</file>
-            <file>file:/D:/JAVA-CON-GIT/21-FacturadorCompleto/src/ModuloProductos/CrearProducto.java</file>
             <file>file:/D:/JAVA-CON-GIT/21-FacturadorCompleto/src/ModuloUsuarios/ListarUsuarios.java</file>
-            <file>file:/D:/JAVA-CON-GIT/21-FacturadorCompleto/src/ModuloFacturas/ListarDetalles.java</file>
-            <file>file:/D:/JAVA-CON-GIT/21-FacturadorCompleto/src/ModuloUsuarios/EliminarUsuario.java</file>
             <file>file:/D:/JAVA-CON-GIT/21-FacturadorCompleto/src/ModuloProductos/ListarProductos.java</file>
             <file>file:/D:/JAVA-CON-GIT/21-FacturadorCompleto/src/ModuloUsuarios/CrearUsuario.java</file>
+            <file>file:/D:/JAVA-CON-GIT/21-FacturadorCompleto/src/Principal/Menu.java</file>
+            <file>file:/D:/JAVA-CON-GIT/21-FacturadorCompleto/src/Clases/Factura.java</file>
+            <file>file:/D:/JAVA-CON-GIT/21-FacturadorCompleto/src/ModuloProductos/ModificarProductos.java</file>
+            <file>file:/D:/JAVA-CON-GIT/21-FacturadorCompleto/src/ModuloProductos/EliminarProductos.java</file>
+            <file>file:/D:/JAVA-CON-GIT/21-FacturadorCompleto/src/ModuloProductos/CrearProducto.java</file>
+            <file>file:/D:/JAVA-CON-GIT/21-FacturadorCompleto/src/ModuloFacturas/ListarDetalles.java</file>
+            <file>file:/D:/JAVA-CON-GIT/21-FacturadorCompleto/src/ModuloUsuarios/EliminarUsuario.java</file>
         </group>
     </open-files>
 </project-private>
