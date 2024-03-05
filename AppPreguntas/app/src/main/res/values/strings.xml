@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">AppPreguntas</string>
+    <dimen name="card_corner_radius">8dp</dimen> <!-- Puedes ajustar este valor según tu diseño -->
+    <dimen name="card_elevation">4dp</dimen> <!-- Puedes ajustar este valor según tu diseño -->
+</resources>
