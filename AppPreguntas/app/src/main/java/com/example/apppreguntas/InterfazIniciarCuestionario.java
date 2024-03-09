@@ -29,6 +29,7 @@ import java.util.Map;
 public class InterfazIniciarCuestionario extends AppCompatActivity {
 
     TextView etq_usuario, etq_fecha_inicio;
+    String id_usuario, nombres, fecha_inicio;
     Config config;
 
     @Override
@@ -46,6 +47,10 @@ public class InterfazIniciarCuestionario extends AppCompatActivity {
         SharedPreferences archivo = getSharedPreferences("app-preguntas", MODE_PRIVATE);
         etq_usuario.setText(archivo.getString("nombres",""));
         FormatoFechayHora();
+
+        this.id_usuario = archivo.getString("id_usuario","");
+        this.nombres = archivo.getString("nombres", "");
+        this.fecha_inicio = etq_fecha_inicio.getText().toString();
     }
 
     public void FormatoFechayHora(){
@@ -68,10 +73,7 @@ public class InterfazIniciarCuestionario extends AppCompatActivity {
     }
 
     public void btnEmpezarCuestionario(View vista){
-        SharedPreferences archivo = getSharedPreferences("app-preguntas", MODE_PRIVATE);
-        String id_usuario = archivo.getString("id_usuario","");
-        String nombres = archivo.getString("nombres", "");
-        String fecha_inicio = etq_fecha_inicio.getText().toString();
+
 
         RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
         String url = config.getEndpoint("APIenPHPpreguntas/insertNuevoCuestionario.php");
@@ -82,25 +84,12 @@ public class InterfazIniciarCuestionario extends AppCompatActivity {
                 System.out.println("El servidor POST responde OK");
                 System.out.println(response);
 
-                /*/try {
+                try {
                     JSONObject jsonObject = new JSONObject(response);
-                    extractId( jsonObject );
+                    extractDates( jsonObject );
                 } catch (JSONException e) {
                     throw new RuntimeException(e);
-                }/*/
-
-                //Abrir archivo de persistencia y almacenar datos de usuario
-                SharedPreferences archivo = getSharedPreferences("app-preguntas", MODE_PRIVATE);
-                SharedPreferences.Editor editor = archivo.edit();
-                editor.putString("id_usuario", id_usuario);
-                editor.putString("nombres", nombres);
-                editor.putString("fecha_inicio", fecha_inicio);
-                editor.commit();
-
-
-                Intent intencion = new Intent(getApplicationContext(), InterfazCrearCuestionario.class);
-                startActivity(intencion);
-                finish();
+                }
             }
         }, new Response.ErrorListener() {
             @Override
@@ -123,5 +112,31 @@ public class InterfazIniciarCuestionario extends AppCompatActivity {
 
         queue.add(solicitud);
     }
+
+
+
+    public void extractDates(JSONObject data) throws JSONException {
+        JSONObject id_cuestionario = data.getJSONObject("id_cuestionario");
+        int id = id_cuestionario.getInt("id");
+        System.out.println("Este es el id del cuestionario: "+String.valueOf(id));
+
+        //Abrir archivo de persistencia y almacenar datos de usuario
+        SharedPreferences archivo = getSharedPreferences("app-preguntas", MODE_PRIVATE);
+        SharedPreferences.Editor editor = archivo.edit();
+        editor.putString("id_usuario", id_usuario);
+        editor.putString("nombres", nombres);
+        editor.putString("fecha_inicio", fecha_inicio);
+        editor.putString("id", String.valueOf(id));
+        editor.commit();
+
+
+        Intent intencion = new Intent(getApplicationContext(), InterfazCrearCuestionario.class);
+        startActivity(intencion);
+        finish();
+
+
+
+    }
+
 
 }
