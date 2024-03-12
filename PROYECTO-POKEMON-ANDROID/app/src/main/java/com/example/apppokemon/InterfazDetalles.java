@@ -5,6 +5,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -13,6 +15,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.bumptech.glide.Glide;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -33,6 +36,8 @@ public class InterfazDetalles extends AppCompatActivity {
 
     RecyclerView recycler, recycler_habilidades;
 
+    ImageView loading_pokeball;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,8 +48,17 @@ public class InterfazDetalles extends AppCompatActivity {
         etqNombrePokemon = findViewById(R.id.etqNombrePokemon);
         recycler = findViewById(R.id.recycler_imgs_pokemons);
         recycler_habilidades = findViewById(R.id.recycler_habilidades);
+
+
         listado = new ArrayList<>();
         listadoHabilidades = new ArrayList<>();
+
+        loading_pokeball = findViewById(R.id.loading_pokeball);
+        Glide.with(this)
+                .asGif()
+                .load(R.drawable.loading_pokeball)
+                .into(loading_pokeball);
+
 
         Bundle datos = getIntent().getExtras();
         String nombres = datos.getString("nombres").toUpperCase();
@@ -57,6 +71,8 @@ public class InterfazDetalles extends AppCompatActivity {
     }
 
     public void consumoGetImagenPokemon(){
+        // Mostrar el GIF animado antes de hacer la solicitud de red
+        loading_pokeball.setVisibility(View.VISIBLE);
 
         RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
         String url = url_recibo;
@@ -64,6 +80,9 @@ public class InterfazDetalles extends AppCompatActivity {
         JsonObjectRequest solicitud =  new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
+                // Ocultar el GIF animado cuando se recibe la respuesta
+                loading_pokeball.setVisibility(View.GONE);
+
                 System.out.println("El servidor responde OK");
                 System.out.println(response.toString());
 
@@ -72,6 +91,9 @@ public class InterfazDetalles extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                // Ocultar el GIF animado en caso de error
+                loading_pokeball.setVisibility(View.GONE);
+
                 System.out.println("El servidor responde con un error:");
                 System.out.println(error.getMessage());
             }
@@ -91,10 +113,13 @@ public class InterfazDetalles extends AppCompatActivity {
 
             //Consumo para las imagenes y agregarlas a la lista
             JSONObject sprites = data.getJSONObject("sprites");
-            String front_default = sprites.getString("front_default");
-            String back_default = sprites.getString("back_default");
-            String front_shiny = sprites.getString("front_shiny");
-            String back_shiny = sprites.getString("back_shiny");
+            JSONObject other = sprites.getJSONObject("other");
+            JSONObject showdown = other.getJSONObject("showdown");
+
+            String front_default = showdown.getString("front_default");
+            String back_default = showdown.getString("back_default");
+            String front_shiny = showdown.getString("front_shiny");
+            String back_shiny = showdown.getString("back_shiny");
 
             listado.add(new ImagenPokemon(front_default));
             listado.add(new ImagenPokemon(back_default));

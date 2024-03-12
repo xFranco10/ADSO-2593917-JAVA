@@ -7,10 +7,13 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.gif.GifDrawable;
 import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.ImageViewTarget;
 
 import java.util.List;
 
@@ -52,17 +55,46 @@ public class AdaptadorImagenes extends RecyclerView.Adapter< AdaptadorImagenes.V
             }
 
             public void cargarDatos(ImagenPokemon datos){
+                String url = datos.getUrl_imagen();
 
-                // Opciones para el tamaño de la imagen
-                RequestOptions options = new RequestOptions()
-                        .override(600, 600); // Especifica el ancho y el alto en píxeles
+                //Modificar la imagen in the imageview
+                if (url.endsWith(".gif")){
+
+                    // Cargar la imagen con Glide
+                    Glide.with(contexto)
+                            .asGif()
+                            .load(datos.getUrl_imagen())
+                            .into(new ImageViewTarget<GifDrawable>(imgPokemon) {
+                                @Override
+                                protected void setResource(@Nullable GifDrawable resource) {
+                                    if (resource != null){
+                                        imgPokemon.setImageDrawable(resource);
+                                        resource.start(); //Inicia la animacion
+                                    }else{
+                                        System.out.println("resource es nulo");
+                                    }
+                                }
+                            });
+
+                }else{
+                    //Si no es un Gif, carga la imagen normalmente
+
+                    // Opciones para el tamaño de la imagen
+                    RequestOptions options = new RequestOptions()
+                            .override(150, 150); // Especifica el ancho y el alto en píxeles
 
 
-                // Cargar la imagen con Glide
-                Glide.with(contexto)
-                        .load(datos.getUrl_imagen())
-                        .apply(options) // Aplicar opciones de tamaño
-                        .into(imgPokemon);
+                    // Cargar la imagen con Glide
+                    Glide.with(contexto)
+                            .load(datos.getUrl_imagen())
+                            .apply(options) // Aplicar opciones de tamaño
+                            .into(imgPokemon);
+
+                }
+
+
+
+
             }
         }
     }

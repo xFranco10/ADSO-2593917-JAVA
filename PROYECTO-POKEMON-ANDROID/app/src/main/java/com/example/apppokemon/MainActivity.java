@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -14,6 +15,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.bumptech.glide.Glide;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -28,6 +30,8 @@ public class MainActivity extends AppCompatActivity {
     List<Pokemon> listado;
     int offset = 0; // Contador de desplazamiento
     Button idBtnAnterior, idBtnSiguiente;
+    ImageView loading_pokeball;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,6 +40,11 @@ public class MainActivity extends AppCompatActivity {
         recycler = findViewById(R.id.recycler_pokemons);
         idBtnAnterior = findViewById(R.id.idBtnAnterior);
         idBtnSiguiente = findViewById(R.id.idBtnSiguiente);
+        loading_pokeball = findViewById(R.id.loading_pokeball);
+        Glide.with(this)
+                .asGif()
+                .load(R.drawable.loading_pokeball)
+                .into(loading_pokeball);
 
         this.listado = new ArrayList<>();
 
@@ -44,6 +53,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void consumoGetListaPokemons(){
+        // Mostrar el GIF animado antes de hacer la solicitud de red
+        loading_pokeball.setVisibility(View.VISIBLE);
 
         RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
         String url = "https://pokeapi.co/api/v2/pokemon?offset=0&limit=20";
@@ -51,6 +62,9 @@ public class MainActivity extends AppCompatActivity {
         JsonObjectRequest solicitud =  new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
+                // Ocultar el GIF animado cuando se recibe la respuesta
+                loading_pokeball.setVisibility(View.GONE);
+
                 System.out.println("El servidor responde OK");
                 System.out.println(response.toString());
 
@@ -59,6 +73,9 @@ public class MainActivity extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                // Ocultar el GIF animado en caso de error
+                loading_pokeball.setVisibility(View.GONE);
+
                 System.out.println("El servidor responde con un error:");
                 System.out.println(error.getMessage());
             }
@@ -75,7 +92,10 @@ public class MainActivity extends AppCompatActivity {
             for (int i = 0; i < array.length(); i++) {
                 System.out.println("Longitud de arreglo: "+array.length());
                 JSONObject pokemon = array.getJSONObject(i);
-                String numPokemon = "00"+i;
+
+                String numPokemon = "00"+(offset+i+1);
+
+
                 String name = pokemon.getString("name").toUpperCase();
                 String url = pokemon.getString("url");
 
@@ -91,6 +111,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void btnSiguiente(View vista){
+
         // Limpiamos la lista y el RecyclerView
         listado.clear();
         recycler.getAdapter().notifyDataSetChanged();
@@ -104,12 +125,20 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void consumoGetBotonSiguiente(){
+        // Mostrar el GIF animado antes de hacer la solicitud de red
+        loading_pokeball.setVisibility(View.VISIBLE);
+
+
         RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
         String url = "https://pokeapi.co/api/v2/pokemon?offset="+offset+"&limit=20";
 
         JsonObjectRequest solicitud =  new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
+                // Ocultar el GIF animado cuando se recibe la respuesta
+                loading_pokeball.setVisibility(View.GONE);
+
+
                 System.out.println("El servidor responde OK");
                 System.out.println(response.toString());
 
@@ -118,6 +147,9 @@ public class MainActivity extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                // Ocultar el GIF animado en caso de error
+                loading_pokeball.setVisibility(View.GONE);
+
                 System.out.println("El servidor responde con un error:");
                 System.out.println(error.getMessage());
             }
@@ -141,12 +173,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void consumoGetBotonAtras(){
+        // Mostrar el GIF animado antes de hacer la solicitud de red
+        loading_pokeball.setVisibility(View.VISIBLE);
+
+
         RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
         String url = "https://pokeapi.co/api/v2/pokemon?offset="+offset+"&limit=20";
 
         JsonObjectRequest solicitud =  new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
+                // Ocultar el GIF animado cuando se recibe la respuesta
+                loading_pokeball.setVisibility(View.GONE);
+
                 System.out.println("El servidor responde OK");
                 System.out.println(response.toString());
 
@@ -155,6 +194,9 @@ public class MainActivity extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                // Ocultar el GIF animado en caso de error
+                loading_pokeball.setVisibility(View.GONE);
+
                 System.out.println("El servidor responde con un error:");
                 System.out.println(error.getMessage());
             }
